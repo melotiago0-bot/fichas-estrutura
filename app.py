@@ -86,13 +86,16 @@ def sugestao():
         resp = app.make_default_options_response()
         return resp
     try:
-        import urllib.request
+        import urllib.request, urllib.parse
         data = request.get_json(force=True)
         SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzx0Ky5OzwOkvJ7JmoVQUP162TJIYWW6BrD5-w6R7EKB_uxt2omexmCiMQ-sYSg0w8s/exec'
-        payload = json.dumps(data).encode('utf-8')
-        req = urllib.request.Request(SHEETS_URL, data=payload, headers={'Content-Type': 'application/json'}, method='POST')
-        urllib.request.urlopen(req, timeout=10)
-        return jsonify({'status': 'ok'})
+        params = urllib.parse.urlencode({
+            'texto': data.get('texto', ''),
+            'autor': data.get('autor', 'Equipa')
+        })
+        url = SHEETS_URL + '?' + params
+        response = urllib.request.urlopen(url, timeout=15)
+        return jsonify({'status': 'ok', 'response': response.read().decode('utf-8')})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
