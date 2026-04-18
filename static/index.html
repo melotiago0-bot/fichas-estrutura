@@ -513,8 +513,8 @@ body {
   </div>
   <div class="topbar-spacer"></div>
   <button class="topbar-btn" onclick="exportSuggestions()">
-    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3 6l3.5 3.5L10 6M2 11h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Exportar sugestões
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h9v9M2 11L11 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    Ver sugestões
   </button>
 </header>
 
@@ -692,39 +692,38 @@ document.getElementById('apiKey').addEventListener('change', function(){
 });
 
 // ── SUGGESTIONS ───────────────────────────────────────────────────────────────
-function getSuggs(){ try{ return JSON.parse(localStorage.getItem('fe_suggs')||'[]'); }catch{ return []; } }
-function saveSuggs(a){ localStorage.setItem('fe_suggs', JSON.stringify(a)); }
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzx0Ky5OzwOkvJ7JmoVQUP162TJIYWW6BrD5-w6R7EKB_uxt2omexmCiMQ-sYSg0w8s/exec';
 
-function addSugg(){
+async function addSugg(){
   const txt = document.getElementById('suggInput').value.trim();
   if (!txt) return;
-  const a = getSuggs();
-  a.push({ text: txt, ts: new Date().toLocaleString('pt-PT') });
-  saveSuggs(a);
-  document.getElementById('suggInput').value = '';
-  renderSuggs();
+  const btn = document.querySelector('.sugg-submit');
+  btn.disabled = true;
+  btn.textContent = 'A enviar…';
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ texto: txt, autor: 'Equipa' })
+    });
+    document.getElementById('suggInput').value = '';
+    document.getElementById('suggList').innerHTML = '<p class="sugg-empty">✓ Sugestão enviada para o Google Sheets.</p>';
+    setTimeout(()=>{ document.getElementById('suggList').innerHTML='<p class="sugg-empty">Nenhuma sugestão pendente.</p>'; }, 3000);
+  } catch(e) {
+    alert('Erro ao enviar sugestão. Verifica a ligação à internet.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '+ Guardar';
+  }
 }
 
-function delSugg(i){ const a=getSuggs(); a.splice(i,1); saveSuggs(a); renderSuggs(); }
-
 function renderSuggs(){
-  const a = getSuggs();
-  const el = document.getElementById('suggList');
-  if (!a.length){ el.innerHTML='<p class="sugg-empty">Nenhuma sugestão ainda.</p>'; return; }
-  el.innerHTML = '<div class="sugg-list">'
-    + a.map((s,i)=>`<div class="sugg-item">
-        <span class="sugg-ts">${s.ts}</span>
-        <span class="sugg-txt">${esc(s.text)}</span>
-        <button class="sugg-del" onclick="delSugg(${i})">✕</button>
-      </div>`).join('')
-    + '</div>';
+  document.getElementById('suggList').innerHTML = '<p class="sugg-empty">As sugestões são enviadas diretamente para o Google Sheets.</p>';
 }
 
 function exportSuggestions(){
-  const a = getSuggs();
-  if (!a.length){ alert('Não há sugestões guardadas.'); return; }
-  const hdr = `SUGESTÕES DE MELHORIA AO PROMPT — FICHAS DE ESTRUTURA\nExportado em: ${new Date().toLocaleString('pt-PT')}\n${'─'.repeat(56)}\n\n`;
-  dlTxt(hdr + a.map((s,i)=>`[${i+1}] ${s.ts}\n${s.text}\n`).join('\n'), 'sugestoes_prompt.txt');
+  window.open('https://docs.google.com/spreadsheets/d/1ksx3NULROsURNDxm8EPo-v5-9o99f_o7pohaIvVMaAA/edit', '_blank');
 }
 
 // ── FILE ──────────────────────────────────────────────────────────────────────
