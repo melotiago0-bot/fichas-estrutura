@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fichas de Estrutura</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --ink: #0f0f0d;
+  --ink-2: #3d3d38;
+  --ink-3: #7a7a72;
+  --ink-4: #b8b8b0;
+  --ink-5: #e8e8e2;
+  --paper: #fafaf7;
+  --paper-2: #f2f2ed;
+  --paper-3: #eaeae4;
+  --line: rgba(15,15,13,0.08);
+  --line-strong: rgba(15,15,13,0.14);
+  --blue: #1a44c2;
+  --blue-light: #eef1fb;
+  --blue-mid: #c5cef5;
+  --green: #0e7a52;
+  --green-light: #e6f4ee;
+  --amber: #8a5a00;
+  --amber-light: #fdf3e0;
+  --red: #9b2020;
+  --red-light: #fceaea;
+  --r: 12px;
+  --r-sm: 7px;
+  --r-lg: 18px;
+  --shadow: 0 1px 3px rgba(15,15,13,.06), 0 4px 16px rgba(15,15,13,.04);
+  --shadow-lg: 0 2px 8px rgba(15,15,13,.08), 0 12px 40px rgba(15,15,13,.08);
+  font-size: 15px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(250,250,247,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  height: 56px;
+  display: flex; align-items: center;
+  padding: 0 2rem;
+  gap: 1rem;
+}
+
+.topbar-brand {
+  display: flex; align-items: center; gap: 10px;
+}
+
+.brand-mark {
+  width: 28px; height: 28px;
+  background: var(--ink);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-mark svg { display: block; }
+
+.brand-name {
+  font-size: 14px; font-weight: 500; letter-spacing: -.01em;
+}
+
+.brand-sub {
+  font-size: 12px; color: var(--ink-3);
+  padding-left: 10px;
+  border-left: 1px solid var(--line-strong);
+  margin-left: 2px;
+}
+
+.topbar-spacer { flex: 1; }
+
+.topbar-btn {
+  height: 32px; padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  border-radius: var(--r-sm);
+  font-family: inherit; font-size: 13px;
+  color: var(--ink-2); cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: all .15s;
+}
+.topbar-btn:hover { background: var(--paper-2); color: var(--ink); border-color: var(--ink-4); }
+
+/* ── LAYOUT ── */
+.layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  min-height: calc(100vh - 56px);
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  border-right: 1px solid var(--line);
+  padding: 2rem 1.75rem 3rem;
+  display: flex; flex-direction: column; gap: 1.5rem;
+  position: sticky; top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  background: var(--paper);
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 2px; }
+
+/* ── SECTION LABEL ── */
+.sec-label {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: .6rem;
+}
+
+/* ── CARDS ── */
+.s-card {
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 1.1rem 1.2rem;
+}
+
+/* ── INPUTS ── */
+.field { display: flex; flex-direction: column; gap: 5px; }
+
+.field label {
+  font-size: 12px; color: var(--ink-3); font-weight: 400;
+}
+
+.inp, .sel, .ta {
+  font-family: inherit; font-size: 13px; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm); outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  width: 100%;
+}
+.inp { height: 36px; padding: 0 10px; }
+.sel { height: 36px; padding: 0 10px; appearance: none; cursor: pointer; }
+.ta { padding: 9px 10px; resize: vertical; min-height: 72px; line-height: 1.55; }
+
+.inp:focus,.sel:focus,.ta:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(26,68,194,.1);
+}
+
+.key-row { display: grid; grid-template-columns: 1fr auto; gap: 6px; align-items: end; }
+
+.vis-btn {
+  height: 36px; padding: 0 10px;
+  background: var(--paper); border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm); cursor: pointer;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--ink-3); transition: all .15s;
+}
+.vis-btn:hover { background: var(--paper-3); color: var(--ink); }
+
+/* ── UPLOAD ── */
+.upload-zone {
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--r);
+  padding: 1.25rem 1rem;
+  text-align: center; cursor: pointer;
+  transition: all .2s; position: relative;
+  background: var(--paper-2);
+}
+.upload-zone:hover,.upload-zone.drag {
+  border-color: var(--blue);
+  background: var(--blue-light);
+}
+.upload-zone input[type=file] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.upload-icon {
+  width: 36px; height: 36px;
+  background: var(--paper-3); border: 1px solid var(--line);
+  border-radius: 9px; margin: 0 auto .6rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  transition: all .2s;
+}
+.upload-zone:hover .upload-icon,.upload-zone.drag .upload-icon {
+  background: var(--blue-mid); border-color: var(--blue);
+}
+.upload-p { font-size: 13px; color: var(--ink-3); }
+.upload-p strong { color: var(--blue); font-weight: 500; }
+.upload-hint { font-size: 11px; color: var(--ink-4); margin-top: 3px; }
+.upload-name { margin-top: 8px; color: var(--green); font-weight: 500; font-size: 12px; display: none; font-family: 'DM Mono', monospace; }
+
+/* ── GENERATE BTN ── */
+.gen-btn {
+  width: 100%; height: 44px;
+  background: var(--ink); color: var(--paper);
+  border: none; border-radius: var(--r-sm);
+  font-family: inherit; font-size: 14px; font-weight: 500;
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: center; gap: 8px;
+  transition: all .2s; letter-spacing: -.01em;
+}
+.gen-btn:hover { background: var(--ink-2); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+.gen-btn:active { transform: translateY(0); box-shadow: none; }
+.gen-btn:disabled { background: var(--ink-5); color: var(--ink-4); cursor: not-allowed; transform: none; box-shadow: none; }
+
+.spinner {
+  width: 15px; height: 15px;
+  border: 2px solid rgba(250,250,247,.25);
+  border-top-color: var(--paper);
+  border-radius: 50%;
+  animation: spin .65s linear infinite; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── PROGRESS ── */
+.prog-wrap { display: none; }
+.prog-bar {
+  height: 2px; background: var(--paper-3);
+  border-radius: 2px; overflow: hidden; margin: .75rem 0 .3rem;
+}
+.prog-fill {
+  height: 100%; background: var(--ink);
+  border-radius: 2px; transition: width .5s ease;
+}
+.prog-msg { font-size: 11px; color: var(--ink-4); text-align: center; font-family: 'DM Mono', monospace; }
+
+/* ── NOTICE ── */
+.notice {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 9px 11px; border-radius: var(--r-sm);
+  font-size: 12px; line-height: 1.5;
+}
+.n-info { background: var(--blue-light); color: #1a3fa8; border: 1px solid var(--blue-mid); }
+.n-warn { background: var(--amber-light); color: var(--amber); border: 1px solid #f0d080; }
+
+.error-msg {
+  background: var(--red-light); color: var(--red);
+  border: 1px solid #f0c0c0; border-radius: var(--r-sm);
+  padding: 9px 11px; font-size: 13px; display: none;
+}
+.error-msg.on { display: block; }
+
+/* ── SUGG ── */
+.sugg-row { display: flex; justify-content: flex-end; margin-top: .5rem; }
+.sugg-submit {
+  height: 30px; padding: 0 12px;
+  background: transparent; border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm); font-family: inherit; font-size: 12px;
+  color: var(--ink-3); cursor: pointer; transition: all .15s;
+}
+.sugg-submit:hover { background: var(--paper-3); color: var(--ink); }
+
+.sugg-list { display: grid; gap: 5px; margin-top: .75rem; }
+.sugg-item {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--r-sm); padding: .5rem .8rem;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.sugg-ts { font-size: 10px; color: var(--ink-4); font-family: 'DM Mono', monospace; white-space: nowrap; padding-top: 2px; }
+.sugg-txt { flex: 1; font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+.sugg-del { background: none; border: none; color: var(--ink-5); cursor: pointer; font-size: 12px; padding: 0; transition: color .15s; }
+.sugg-del:hover { color: var(--red); }
+.sugg-empty { font-size: 12px; color: var(--ink-4); text-align: center; padding: .6rem 0; }
+
+/* ── MAIN CONTENT ── */
+.content {
+  padding: 2.5rem 2.5rem 4rem;
+  display: flex; flex-direction: column; gap: 2rem;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 1rem;
+  padding: 4rem 2rem;
+  opacity: 1; transition: opacity .3s;
+}
+.empty-state.hidden { display: none; }
+
+.empty-graphic {
+  width: 80px; height: 80px;
+  background: var(--paper-2); border: 1px solid var(--line);
+  border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; margin-bottom: .5rem;
+}
+.empty-title { font-size: 16px; font-weight: 500; color: var(--ink-2); }
+.empty-sub { font-size: 13px; color: var(--ink-3); max-width: 280px; line-height: 1.6; }
+
+/* ── RESULT ── */
+.result-wrap { display: none; flex-direction: column; gap: 1.75rem; animation: fadeUp .4s ease; }
+.result-wrap.on { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* ── RESULT HEADER ── */
+.uc-header {
+  background: var(--ink); color: var(--paper);
+  border-radius: var(--r-lg); padding: 1.75rem 2rem;
+  position: relative; overflow: hidden;
+}
+.uc-header::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 180px; height: 180px;
+  background: rgba(255,255,255,.03);
+  border-radius: 50%;
+}
+.uc-header::after {
+  content: '';
+  position: absolute; bottom: -60px; right: 40px;
+  width: 120px; height: 120px;
+  background: rgba(255,255,255,.025);
+  border-radius: 50%;
+}
+.uc-kicker { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(250,250,247,.4); margin-bottom: .4rem; font-family: 'DM Mono', monospace; }
+.uc-name { font-size: 22px; font-weight: 500; letter-spacing: -.02em; line-height: 1.2; margin-bottom: .3rem; }
+.uc-autor { font-size: 13px; color: rgba(250,250,247,.55); }
+.uc-meta { display: flex; gap: .75rem; margin-top: 1.25rem; flex-wrap: wrap; }
+.uc-tag {
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 12px; color: rgba(250,250,247,.75);
+}
+
+/* ── APRESENTACAO ── */
+.apres-block {
+  background: var(--paper-2); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.25rem 1.4rem;
+}
+.apres-intro { font-size: 11px; color: var(--ink-4); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .6rem; }
+.apres-text { font-size: 14px; color: var(--ink-2); line-height: 1.7; }
+.kw-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: .9rem; }
+.kw-tag {
+  background: var(--paper); border: 1px solid var(--line-strong);
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 12px; color: var(--ink-3);
+}
+
+/* ── STATS ROW ── */
+.stats-row {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: .6rem;
+}
+.stat-card {
+  background: var(--paper-2); border: 1px solid var(--line);
+  border-radius: var(--r-sm); padding: .75rem .9rem;
+  text-align: center;
+}
+.stat-n { font-size: 22px; font-weight: 300; letter-spacing: -.02em; color: var(--ink); font-family: 'DM Mono', monospace; }
+.stat-l { font-size: 10px; color: var(--ink-4); margin-top: 2px; text-transform: uppercase; letter-spacing: .06em; }
+.stat-ok .stat-n { color: var(--green); }
+.stat-warn .stat-n { color: var(--amber); }
+.stat-err .stat-n { color: var(--red); }
+
+/* ── REPORT SECTION ── */
+.report-wrap {
+  background: var(--paper-2); border: 1px solid var(--line);
+  border-radius: var(--r-lg); overflow: hidden;
+}
+.report-header {
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: .75rem;
+}
+.report-icon {
+  width: 30px; height: 30px;
+  background: var(--ink); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.report-title { font-size: 14px; font-weight: 500; }
+.report-sub { font-size: 12px; color: var(--ink-3); margin-top: 1px; }
+.report-body { padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
+
+.report-global {
+  font-size: 13px; color: var(--ink-2); line-height: 1.7;
+  padding: 1rem 1.1rem;
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  border-left: 3px solid var(--ink);
+}
+
+.report-ue {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--r-sm); overflow: hidden;
+}
+.report-ue-head {
+  display: flex; align-items: center; gap: 9px;
+  padding: .65rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-2);
+}
+.rue-num {
+  width: 22px; height: 22px;
+  background: var(--ink); color: var(--paper);
+  border-radius: 6px; font-size: 11px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: 'DM Mono', monospace;
+}
+.rue-title { font-size: 13px; font-weight: 500; }
+.report-ue-body { padding: .75rem 1rem; font-size: 13px; color: var(--ink-3); line-height: 1.65; }
+.obj-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: .5rem; }
+.obj-tag {
+  background: var(--blue-light); color: var(--blue); border: 1px solid var(--blue-mid);
+  border-radius: 5px; padding: 2px 8px; font-size: 11px; font-family: 'DM Mono', monospace;
+}
+
+/* ── UE GRID ── */
+.ue-section-title {
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink-4);
+}
+
+.ue-grid { display: grid; gap: .75rem; }
+
+.ue-card {
+  background: var(--paper-2); border: 1px solid var(--line);
+  border-radius: var(--r); overflow: hidden;
+  transition: box-shadow .2s, border-color .2s;
+}
+.ue-card:hover { box-shadow: var(--shadow); border-color: var(--ink-5); }
+
+.ue-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: .75rem 1.1rem; border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+.ue-badge {
+  width: 24px; height: 24px;
+  background: var(--ink); color: var(--paper);
+  border-radius: 6px; font-size: 11px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: 'DM Mono', monospace;
+}
+.ue-ttl { font-size: 14px; font-weight: 500; letter-spacing: -.01em; flex: 1; }
+
+.ue-body { padding: .8rem 1.1rem; }
+.ue-desc { font-size: 13px; color: var(--ink-3); line-height: 1.65; padding-bottom: .75rem; margin-bottom: .75rem; border-bottom: 1px solid var(--line); }
+
+.eact-list { display: grid; gap: 4px; }
+.eact-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; padding: 4px 0;
+}
+.eact-idx {
+  width: 18px; height: 18px;
+  background: var(--paper-3); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--ink-4); flex-shrink: 0;
+  font-family: 'DM Mono', monospace;
+}
+.eact-name { flex: 1; color: var(--ink-2); }
+.pill {
+  font-size: 11px; padding: 2px 8px; border-radius: 20px;
+  font-weight: 400; white-space: nowrap; border: 1px solid transparent;
+}
+.p-info { background: var(--blue-light); color: var(--blue); border-color: var(--blue-mid); }
+.p-work { background: var(--amber-light); color: var(--amber); border-color: #f0d080; }
+.p-feed { background: var(--green-light); color: var(--green); border-color: #8dd4b4; }
+.p-inter { background: #f3e8fc; color: #6b21a8; border-color: #d8aaef; }
+
+/* ── EXPORT ── */
+.export-row { display: flex; gap: .75rem; }
+.exp-btn {
+  flex: 1; height: 42px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper-2); border-radius: var(--r-sm);
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  color: var(--ink-2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all .2s;
+}
+.exp-btn:hover { background: var(--paper-3); color: var(--ink); border-color: var(--ink-4); transform: translateY(-1px); box-shadow: var(--shadow); }
+.exp-btn:active { transform: none; box-shadow: none; }
+.exp-btn.primary-exp { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.exp-btn.primary-exp:hover { background: var(--ink-2); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); }
+  .stats-row { grid-template-columns: repeat(3,1fr); }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-mark">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <rect x="1" y="1" width="5" height="5" rx="1.5" fill="white" opacity=".9"/>
+        <rect x="8" y="1" width="5" height="5" rx="1.5" fill="white" opacity=".5"/>
+        <rect x="1" y="8" width="5" height="5" rx="1.5" fill="white" opacity=".5"/>
+        <rect x="8" y="8" width="5" height="5" rx="1.5" fill="white" opacity=".25"/>
+      </svg>
+    </div>
+    <span class="brand-name">Fichas de Estrutura</span>
+    <span class="brand-sub">Operações Online PT</span>
+  </div>
+  <div class="topbar-spacer"></div>
+  <button class="topbar-btn" onclick="exportSuggestions()">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3 6l3.5 3.5L10 6M2 11h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Exportar sugestões
+  </button>
+</header>
+
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+
+    <!-- Config -->
+    <div>
+      <p class="sec-label">Configuração</p>
+      <div class="s-card" style="display:grid;gap:.85rem">
+        <div class="field">
+          <label>Chave API Anthropic</label>
+          <div class="key-row">
+            <input class="inp" type="password" id="apiKey" placeholder="sk-ant-…" oninput="checkReady()" />
+            <button class="vis-btn" onclick="toggleKey()">mostrar</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Tipo de curso</label>
+          <select class="sel" id="tipoCurso">
+            <option value="Licenciatura">Licenciatura</option>
+            <option value="Mestrado">Mestrado</option>
+            <option value="Executive Master">Executive Master</option>
+          </select>
+        </div>
+        <div class="notice n-info" style="margin-top:-.1rem">
+          <span>ℹ</span>
+          <span>Chave guardada localmente no browser. Nunca enviada para outro servidor que não a API Anthropic.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FUC -->
+    <div>
+      <p class="sec-label">FUC</p>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fucFile" accept=".pdf,image/*" onchange="handleFile(this)" />
+        <div class="upload-icon">📄</div>
+        <p class="upload-p">Arrasta ou <strong>clica para selecionar</strong></p>
+        <p class="upload-hint">PDF ou imagem — PNG, JPG</p>
+        <div class="upload-name" id="fileName"></div>
+      </div>
+    </div>
+
+    <!-- Notas -->
+    <div>
+      <p class="sec-label">Notas sobre a FUC <span style="text-transform:none;letter-spacing:0;font-size:10px;color:var(--ink-4)">(opcional)</span></p>
+      <div class="s-card" style="display:grid;gap:.75rem">
+        <div class="field">
+          <textarea class="ta" id="notasFUC" placeholder="Contexto adicional para esta UC específica — ex: &quot;privilegiar Case Study&quot;, &quot;evitar Fórum&quot;, &quot;conteúdo visual forte&quot;…"></textarea>
+        </div>
+        <div class="notice n-info" style="margin-top:-.1rem">
+          <span>ℹ</span>
+          <span>As regras pedagógicas têm sempre precedência. Estas notas são apenas contexto de apoio.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generate -->
+    <div>
+      <button class="gen-btn" id="generateBtn" onclick="generate()" disabled>
+        Gerar Ficha de Estrutura
+      </button>
+      <div class="error-msg" id="errorBox" style="margin-top:.75rem"></div>
+      <div class="prog-wrap" id="progWrap" style="margin-top:.75rem">
+        <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+        <p class="prog-msg" id="progMsg">a processar…</p>
+      </div>
+    </div>
+
+    <!-- Sugestões -->
+    <div>
+      <p class="sec-label">Sugestões de melhoria ao prompt</p>
+      <div class="s-card" style="display:grid;gap:.75rem">
+        <div class="field">
+          <textarea class="ta" id="suggInput" placeholder="Sugere uma melhoria ao prompt base — qualquer ideia é bem-vinda…" style="min-height:60px"></textarea>
+        </div>
+        <div class="sugg-row">
+          <button class="sugg-submit" onclick="addSugg()">+ Guardar</button>
+        </div>
+        <div id="suggList"></div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ── CONTENT ── -->
+  <main class="content">
+
+    <!-- Empty state -->
+    <div class="empty-state" id="emptyState">
+      <div class="empty-graphic">📋</div>
+      <p class="empty-title">Pronto para gerar</p>
+      <p class="empty-sub">Carrega a FUC no painel lateral, configura as opções e clica em Gerar.</p>
+    </div>
+
+    <!-- Result -->
+    <div class="result-wrap" id="resultWrap">
+
+      <!-- UC Header -->
+      <div class="uc-header" id="rHeader">
+        <p class="uc-kicker">Ficha de Estrutura</p>
+        <h1 class="uc-name" id="rNomeUC">—</h1>
+        <p class="uc-autor" id="rAutor">—</p>
+        <div class="uc-meta" id="rMeta"></div>
+      </div>
+
+      <!-- Apresentação + keywords -->
+      <div class="apres-block">
+        <p class="apres-intro">Apresentação</p>
+        <p class="apres-text" id="rApres"></p>
+        <div class="kw-row" id="rKw"></div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card" id="sc-leitura"><div class="stat-n" id="cn-l">—</div><div class="stat-l">Leituras</div></div>
+        <div class="stat-card" id="sc-av"><div class="stat-n" id="cn-av">—</div><div class="stat-l">Audiovisuais</div></div>
+        <div class="stat-card" id="sc-trab"><div class="stat-n" id="cn-t">—</div><div class="stat-l">Trabalhos</div></div>
+        <div class="stat-card" id="sc-quiz"><div class="stat-n" id="cn-q">—</div><div class="stat-l">Quiz</div></div>
+        <div class="stat-card" id="sc-forum"><div class="stat-n" id="cn-f">—</div><div class="stat-l">Fórum</div></div>
+      </div>
+
+      <!-- Report -->
+      <div class="report-wrap">
+        <div class="report-header">
+          <div class="report-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 3h10M2 7h7M2 11h5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <p class="report-title">Raciocínio pedagógico</p>
+            <p class="report-sub">Distribuição de objetivos e lógica de estruturação</p>
+          </div>
+        </div>
+        <div class="report-body" id="reportBody"></div>
+      </div>
+
+      <!-- UEs -->
+      <p class="ue-section-title">Unidades de Ensino</p>
+      <div class="ue-grid" id="ueGrid"></div>
+
+      <!-- Export -->
+      <div class="export-row">
+        <button class="exp-btn primary-exp" id="exportBtn" onclick="exportDocx()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M3.5 6L7 9.5l3.5-3.5M2 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Exportar .docx
+        </button>
+      </div>
+
+      <div class="notice n-warn">
+        <span>⚠</span>
+        <span>Este .docx é gerado via JavaScript com formatação funcional mas não idêntica ao template oficial. Para output pixel-perfect usa o pipeline Python com o template original.</span>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────────────────
+let fileData = null, fileType = null, lastResult = null;
+
+// ── API KEY persistence ────────────────────────────────────────────────────────
+(function(){
+  const k = localStorage.getItem('fe_apikey');
+  if (k) document.getElementById('apiKey').value = k;
+  checkReady();
+})();
+document.getElementById('apiKey').addEventListener('change', function(){
+  if (this.value.trim()) localStorage.setItem('fe_apikey', this.value.trim());
+});
+
+// ── SUGGESTIONS ───────────────────────────────────────────────────────────────
+function getSuggs(){ try{ return JSON.parse(localStorage.getItem('fe_suggs')||'[]'); }catch{ return []; } }
+function saveSuggs(a){ localStorage.setItem('fe_suggs', JSON.stringify(a)); }
+
+function addSugg(){
+  const txt = document.getElementById('suggInput').value.trim();
+  if (!txt) return;
+  const a = getSuggs();
+  a.push({ text: txt, ts: new Date().toLocaleString('pt-PT') });
+  saveSuggs(a);
+  document.getElementById('suggInput').value = '';
+  renderSuggs();
+}
+
+function delSugg(i){ const a=getSuggs(); a.splice(i,1); saveSuggs(a); renderSuggs(); }
+
+function renderSuggs(){
+  const a = getSuggs();
+  const el = document.getElementById('suggList');
+  if (!a.length){ el.innerHTML='<p class="sugg-empty">Nenhuma sugestão ainda.</p>'; return; }
+  el.innerHTML = '<div class="sugg-list">'
+    + a.map((s,i)=>`<div class="sugg-item">
+        <span class="sugg-ts">${s.ts}</span>
+        <span class="sugg-txt">${esc(s.text)}</span>
+        <button class="sugg-del" onclick="delSugg(${i})">✕</button>
+      </div>`).join('')
+    + '</div>';
+}
+
+function exportSuggestions(){
+  const a = getSuggs();
+  if (!a.length){ alert('Não há sugestões guardadas.'); return; }
+  const hdr = `SUGESTÕES DE MELHORIA AO PROMPT — FICHAS DE ESTRUTURA\nExportado em: ${new Date().toLocaleString('pt-PT')}\n${'─'.repeat(56)}\n\n`;
+  dlTxt(hdr + a.map((s,i)=>`[${i+1}] ${s.ts}\n${s.text}\n`).join('\n'), 'sugestoes_prompt.txt');
+}
+
+// ── FILE ──────────────────────────────────────────────────────────────────────
+function handleFile(input){
+  const f = input.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    fileData = e.target.result.split(',')[1];
+    fileType = f.type;
+    document.getElementById('fileName').textContent = '✓ ' + f.name;
+    document.getElementById('fileName').style.display = 'block';
+    checkReady();
+  };
+  r.readAsDataURL(f);
+}
+
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover', e=>{e.preventDefault();zone.classList.add('drag');});
+zone.addEventListener('dragleave', ()=>zone.classList.remove('drag'));
+zone.addEventListener('drop', e=>{
+  e.preventDefault(); zone.classList.remove('drag');
+  const f=e.dataTransfer.files[0]; if (!f) return;
+  const dt=new DataTransfer(); dt.items.add(f);
+  document.getElementById('fucFile').files=dt.files;
+  handleFile(document.getElementById('fucFile'));
+});
+
+function checkReady(){
+  document.getElementById('generateBtn').disabled = !(document.getElementById('apiKey').value.trim() && fileData);
+}
+
+function toggleKey(){
+  const i=document.getElementById('apiKey'); i.type=i.type==='password'?'text':'password';
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────────────────────
+let ptimer=null;
+const MSGS=['a ler a fuc…','a mapear conteúdos programáticos…','a estruturar as 7 ues…','a selecionar e-atividades…','a redigir descrições…','a construir raciocínio pedagógico…','a finalizar…'];
+
+function startProg(){
+  let i=0, pct=4;
+  document.getElementById('progWrap').style.display='block';
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progMsg').textContent=MSGS[0];
+  ptimer=setInterval(()=>{
+    pct=Math.min(pct+Math.random()*7+3,90);
+    document.getElementById('progFill').style.width=pct+'%';
+    i=Math.min(i+1,MSGS.length-1);
+    document.getElementById('progMsg').textContent=MSGS[i];
+  },2200);
+}
+function endProg(){
+  clearInterval(ptimer);
+  document.getElementById('progFill').style.width='100%';
+  setTimeout(()=>{ document.getElementById('progWrap').style.display='none'; },600);
+}
+
+// ── SYSTEM PROMPT ──────────────────────────────────────────────────────────────
+const SYSTEM = `És um professor universitário com mais de 15 anos de experiência em ensino online, especialista nas melhores práticas da indústria de e-learning. O teu trabalho é produzir Fichas de Estrutura de Unidades Curriculares (UCs) para a Universidade Europeia / IPAM, com base nas FUCs fornecidas.
+
+ESTRUTURA FIXA DE CADA FICHA:
+- Nome da UC e nome do autor (se dois autores, usar o primeiro)
+- Apresentação: <100 palavras, tom de boas-vindas, foco no objetivo principal
+- Palavras-chave: 4–6 conceitos separados por ponto e vírgula
+- 7 Unidades de Ensino, cada uma com:
+  - Título (máx. 10 palavras)
+  - Descrição (máx. 100 palavras, orientada ao estudante, menciona os objetivos que responde — escritos por extenso com código entre parênteses, ex: "Identificar métodos de avaliação (C1)")
+  - 3 a 4 e-atividades com título (máx. 10 palavras) e tipo
+
+MAPEAMENTO FUC → 7 UEs:
+- Seguir coerência CP→OA da FUC; se não explícita, agrupar tematicamente em 7 blocos progressivos
+- CPs com muitos subtópicos podem dar UEs separadas
+- CPs transversais ficam geralmente na UE7 como síntese integradora
+
+CATÁLOGO E-ATIVIDADES:
+Informação (obrigatório 2–3/UE): Leitura, Leitura Animada, Vídeo-lição, Vídeo-lição Interativa, Vídeo-screencast, Entrevista, Podcast
+Trabalho (opcional): Trabalho, Case Study, Resolução de Exercício
+Feedback (opcional): Quiz
+Interação (opcional): Fórum de Discussão
+
+REGRAS INVIOLÁVEIS:
+- Mín. 4 Leituras por UC; mín. 3 audiovisuais (máx. 3)
+- Leitura Animada: máx. 1/UC, sempre complemento a Leitura existente, nunca substituto
+- Vídeo-lição Interativa: UEs com conteúdo conceptualmente denso
+- Vídeo-screencast: só para demonstração de ferramentas/softwares ou processos procedimentais
+- eAct 1 e 2: sempre Informação; eAct 3 e 4: qualquer categoria
+
+PADRÕES POR TIPO:
+- Licenciatura: variedade, Entrevista, Vídeo-screencast, Case Study
+- Mestrado: Podcast, Vídeo-lição, Fórum — perfil académico
+- Executive Master: Leitura + Quiz + Resolução de Exercícios — pragmático
+
+NOTAS ADICIONAIS: Se fornecidas, usar como contexto de apoio. As regras acima têm sempre precedência absoluta.
+
+RESPONDE APENAS em JSON puro (sem markdown, sem backticks):
+{
+  "nomeUC": "...",
+  "autor": "...",
+  "apresentacao": "...",
+  "palavrasChave": ["..."],
+  "reportGlobal": "Parágrafo de 3-5 frases explicando a lógica geral de estruturação: como os CPs foram agrupados nas 7 UEs, a progressão pedagógica adotada, como os objetivos de aprendizagem foram distribuídos, e as escolhas de formato de e-atividades face ao tipo de curso e natureza do conteúdo.",
+  "ues": [
+    {
+      "numero": 1,
+      "titulo": "...",
+      "descricao": "...",
+      "objetivos": ["C1","C2"],
+      "reportUE": "1-2 frases explicando porque este bloco de CPs foi agrupado assim, que objetivos responde e porquê estas e-atividades específicas.",
+      "eatividades": [
+        {"titulo": "...", "tipo": "...", "categoria": "Informação"}
+      ]
+    }
+  ]
+}`;
+
+// ── GENERATE ──────────────────────────────────────────────────────────────────
+async function generate(){
+  const key=document.getElementById('apiKey').value.trim();
+  if (!key||!fileData) return;
+
+  const btn=document.getElementById('generateBtn');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> A gerar…';
+  document.getElementById('errorBox').classList.remove('on');
+  document.getElementById('resultWrap').classList.remove('on');
+  document.getElementById('emptyState').classList.remove('hidden');
+
+  const notas=document.getElementById('notasFUC').value.trim();
+  const tipo=document.getElementById('tipoCurso').value;
+
+  const userContent=[];
+  if (fileType==='application/pdf'){
+    userContent.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:fileData}});
+  } else {
+    userContent.push({type:'image',source:{type:'base64',media_type:fileType,data:fileData}});
+  }
+
+  let txt=`Tipo de curso: ${tipo}.\nGera a Ficha de Estrutura completa.`;
+  if (notas) txt+=`\n\nNotas (contexto de apoio — regras têm precedência absoluta):\n${notas}`;
+  userContent.push({type:'text',text:txt});
+
+  startProg();
+
+  try {
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-opus-4-5',
+        max_tokens:4096,
+        system:SYSTEM,
+        messages:[{role:'user',content:userContent}]
+      })
+    });
+
+    endProg();
+    if (!resp.ok){ const e=await resp.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${resp.status}`); }
+
+    const data=await resp.json();
+    const raw=data.content?.find(b=>b.type==='text')?.text||'';
+    const clean=raw.replace(/```json|```/g,'').trim();
+    const result=JSON.parse(clean);
+    lastResult=result;
+    renderResult(result);
+
+  } catch(e) {
+    endProg();
+    const box=document.getElementById('errorBox');
+    box.textContent='Erro: '+e.message; box.classList.add('on');
+  } finally {
+    btn.disabled=false; btn.innerHTML='Gerar Ficha de Estrutura'; checkReady();
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+const AV=['Vídeo-lição','Vídeo-lição Interativa','Vídeo-screencast','Entrevista','Podcast','Leitura Animada'];
+
+function pillCls(cat){
+  if(cat==='Informação') return 'p-info';
+  if(cat==='Trabalho') return 'p-work';
+  if(cat==='Feedback') return 'p-feed';
+  if(cat==='Interação') return 'p-inter';
+  return 'p-info';
+}
+
+function renderResult(r){
+  // Header
+  document.getElementById('rNomeUC').textContent=r.nomeUC||'—';
+  document.getElementById('rAutor').textContent=r.autor?'Autor: '+r.autor:'—';
+  const tipo=document.getElementById('tipoCurso').value;
+  document.getElementById('rMeta').innerHTML=`<span class="uc-tag">${tipo}</span><span class="uc-tag">7 UEs</span>`;
+
+  // Apresentação
+  document.getElementById('rApres').textContent=r.apresentacao||'';
+  document.getElementById('rKw').innerHTML=(r.palavrasChave||[]).map(k=>`<span class="kw-tag">${esc(k)}</span>`).join('');
+
+  // Stats
+  let l=0,av=0,t=0,q=0,f=0;
+  (r.ues||[]).forEach(ue=>(ue.eatividades||[]).forEach(ea=>{
+    if(ea.tipo==='Leitura') l++;
+    else if(AV.includes(ea.tipo)) av++;
+    else if(ea.categoria==='Trabalho') t++;
+    else if(ea.categoria==='Feedback') q++;
+    else if(ea.categoria==='Interação') f++;
+  }));
+
+  document.getElementById('cn-l').textContent=l;
+  document.getElementById('cn-av').textContent=av;
+  document.getElementById('cn-t').textContent=t;
+  document.getElementById('cn-q').textContent=q;
+  document.getElementById('cn-f').textContent=f;
+
+  // Color stats by rules
+  setStatClass('sc-leitura', l>=4?'stat-ok':'stat-err');
+  setStatClass('sc-av', av>=3&&av<=3?'stat-ok':av<3?'stat-warn':'stat-warn');
+
+  // Report
+  const rb=document.getElementById('reportBody');
+  rb.innerHTML='';
+
+  if(r.reportGlobal){
+    const div=document.createElement('div');
+    div.className='report-global';
+    div.textContent=r.reportGlobal;
+    rb.appendChild(div);
+  }
+
+  (r.ues||[]).forEach(ue=>{
+    const div=document.createElement('div');
+    div.className='report-ue';
+    const objs=(ue.objetivos||[]).map(o=>`<span class="obj-tag">${esc(o)}</span>`).join('');
+    div.innerHTML=`
+      <div class="report-ue-head">
+        <span class="rue-num">${ue.numero}</span>
+        <span class="rue-title">${esc(ue.titulo)}</span>
+      </div>
+      <div class="report-ue-body">
+        ${esc(ue.reportUE||'')}
+        ${objs?`<div class="obj-tags">${objs}</div>`:''}
+      </div>`;
+    rb.appendChild(div);
+  });
+
+  // UE cards
+  const grid=document.getElementById('ueGrid');
+  grid.innerHTML='';
+  (r.ues||[]).forEach(ue=>{
+    const div=document.createElement('div');
+    div.className='ue-card';
+    const eHtml=(ue.eatividades||[]).map((ea,i)=>`
+      <div class="eact-row">
+        <span class="eact-idx">${i+1}</span>
+        <span class="eact-name">${esc(ea.titulo)}</span>
+        <span class="pill ${pillCls(ea.categoria||'Informação')}">${esc(ea.tipo)}</span>
+      </div>`).join('');
+    div.innerHTML=`
+      <div class="ue-head">
+        <span class="ue-badge">${ue.numero}</span>
+        <span class="ue-ttl">${esc(ue.titulo)}</span>
+      </div>
+      <div class="ue-body">
+        <div class="ue-desc">${esc(ue.descricao)}</div>
+        <div class="eact-list">${eHtml}</div>
+      </div>`;
+    grid.appendChild(div);
+  });
+
+  document.getElementById('emptyState').classList.add('hidden');
+  document.getElementById('resultWrap').classList.add('on');
+  document.getElementById('resultWrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function setStatClass(id, cls){
+  const el=document.getElementById(id);
+  el.className='stat-card '+cls;
+}
+
+// ── PURE JS ZIP ENCODER (no external deps) ────────────────────────────────────
+function strToU8(str){
+  return new TextEncoder().encode(str);
+}
+function crc32(buf){
+  let c=0xFFFFFFFF;
+  const t=new Uint32Array(256);
+  for(let i=0;i<256;i++){let v=i;for(let j=0;j<8;j++)v=v&1?(0xEDB88320^(v>>>1)):v>>>1;t[i]=v;}
+  for(let i=0;i<buf.length;i++)c=t[(c^buf[i])&0xFF]^(c>>>8);
+  return (c^0xFFFFFFFF)>>>0;
+}
+function u32le(n){const b=new Uint8Array(4);new DataView(b.buffer).setUint32(0,n,true);return b;}
+function u16le(n){const b=new Uint8Array(2);new DataView(b.buffer).setUint16(0,n,true);return b;}
+function concat(...arrays){
+  const total=arrays.reduce((s,a)=>s+a.length,0);
+  const out=new Uint8Array(total);
+  let off=0;arrays.forEach(a=>{out.set(a,off);off+=a.length;});
+  return out;
+}
+function makeZip(files){
+  // files: [{name,data:Uint8Array}]
+  const entries=[];
+  let offset=0;
+  const localHeaders=[];
+  files.forEach(f=>{
+    const name=strToU8(f.name);
+    const data=f.data;
+    const crc=crc32(data);
+    const lh=concat(
+      new Uint8Array([0x50,0x4B,0x03,0x04]),// sig
+      u16le(20),u16le(0),u16le(0),// ver,flags,method(store)
+      u16le(0),u16le(0),// modtime,moddate
+      u32le(crc),u32le(data.length),u32le(data.length),
+      u16le(name.length),u16le(0),
+      name
+    );
+    localHeaders.push({lh,data,name,crc,size:data.length,offset});
+    offset+=lh.length+data.length;
+    entries.push(concat(lh,data));
+  });
+  const cdOffset=offset;
+  const cdParts=[];
+  localHeaders.forEach(e=>{
+    cdParts.push(concat(
+      new Uint8Array([0x50,0x4B,0x01,0x02]),
+      u16le(20),u16le(20),u16le(0),u16le(0),
+      u16le(0),u16le(0),
+      u32le(e.crc),u32le(e.size),u32le(e.size),
+      u16le(e.name.length),u16le(0),u16le(0),u16le(0),u16le(0),
+      u32le(0),u32le(e.offset),
+      e.name
+    ));
+  });
+  const cd=concat(...cdParts);
+  const eocd=concat(
+    new Uint8Array([0x50,0x4B,0x05,0x06]),
+    u16le(0),u16le(0),
+    u16le(files.length),u16le(files.length),
+    u32le(cd.length),u32le(cdOffset),
+    u16le(0)
+  );
+  return concat(...entries,cd,eocd);
+}
+
+// ── BUILD DOCX XML ────────────────────────────────────────────────────────────
+function xmlEsc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function wPara(runs, opts={}){
+  const spBefore=opts.before||0, spAfter=opts.after||0;
+  const pPr=`<w:pPr><w:spacing w:before="${spBefore}" w:after="${spAfter}"/></w:pPr>`;
+  return `<w:p>${pPr}${runs}</w:p>`;
+}
+function wRun(text, opts={}){
+  const rpr=[];
+  if(opts.bold) rpr.push('<w:b/>');
+  if(opts.italic) rpr.push('<w:i/>');
+  if(opts.size) rpr.push(`<w:sz w:val="${opts.size}"/><w:szCs w:val="${opts.size}"/>`);
+  if(opts.color) rpr.push(`<w:color w:val="${opts.color}"/>`);
+  const rPr=rpr.length?`<w:rPr>${rpr.join('')}</w:rPr>`:'';
+  const t=xmlEsc(text);
+  const space=text!==text.trim()?` xml:space="preserve"`:'';
+  return `<w:r>${rPr}<w:t${space}>${t}</w:t></w:r>`;
+}
+function heading(text,color='1a44c2'){
+  return wPara(wRun(text,{bold:true,size:24,color}),{before:240,after:80});
+}
+function body(text,color='3d3d38',size=20){
+  return wPara(wRun(text,{size,color}),{after:120});
+}
+function italic(text,color='7a7a72'){
+  return wPara(wRun(text,{italic:true,size:19,color}),{after:80});
+}
+
+function buildDocxXml(r){
+  const tipo=document.getElementById('tipoCurso').value;
+  let body_xml='';
+
+  // Title
+  body_xml+=wPara(wRun(r.nomeUC||'Ficha de Estrutura',{bold:true,size:32,color:'0f0f0d'}),{after:80});
+  body_xml+=wPara(
+    wRun('Autor(a): ',{bold:true,size:20,color:'7a7a72'})+
+    wRun(r.autor||'',{size:20,color:'7a7a72'}),
+    {after:60}
+  );
+  body_xml+=wPara(wRun('Tipo de curso: ',{bold:true,size:20,color:'7a7a72'})+wRun(tipo,{size:20,color:'7a7a72'}),{after:280});
+
+  // Apresentação
+  body_xml+=heading('Apresentação');
+  body_xml+=body(r.apresentacao||'');
+  body_xml+=heading('Palavras-chave');
+  body_xml+=body((r.palavrasChave||[]).join('; '));
+
+  // Report global
+  if(r.reportGlobal){
+    body_xml+=heading('Raciocínio pedagógico');
+    body_xml+=body(r.reportGlobal,'3d3d38');
+  }
+
+  // UEs
+  body_xml+=wPara(wRun('Unidades de Ensino',{bold:true,size:26,color:'1a44c2'}),{before:320,after:160});
+
+  (r.ues||[]).forEach(ue=>{
+    body_xml+=wPara(wRun(`UE${ue.numero} — ${ue.titulo}`,{bold:true,size:22,color:'0f0f0d'}),{before:280,after:80});
+    if(ue.reportUE) body_xml+=italic(ue.reportUE);
+    body_xml+=body(ue.descricao||'');
+    (ue.eatividades||[]).forEach((ea,i)=>{
+      body_xml+=wPara(
+        wRun(`eAt${i+1}  `,{size:18,color:'b8b8b0'})+
+        wRun(ea.titulo,{size:19,color:'0f0f0d'})+
+        wRun(`  [${ea.tipo}]`,{size:18,color:'1a44c2'}),
+        {after:40}
+      );
+    });
+  });
+
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
+  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<w:body>${body_xml}<w:sectPr><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr></w:body>
+</w:document>`;
+}
+
+// ── EXPORT DOCX — via servidor local Python ───────────────────────────────────
+async function exportDocx(){
+  if(!lastResult){ alert('Gera primeiro a ficha antes de exportar.'); return; }
+
+  const btn = document.getElementById('exportBtn');
+  const origHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner" style="border-top-color:#fff"></span> A gerar .docx…';
+
+  try {
+    const resp = await fetch('/generate', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(lastResult)
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(()=>({error:'Erro desconhecido'}));
+      throw new Error(err.error || `HTTP ${resp.status}`);
+    }
+
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const slug = (lastResult.nomeUC||'ficha').replace(/[^a-zA-Z0-9À-ÿ ]/g,'').trim().replace(/ +/g,'_');
+    a.download = slug + '_ficha_estrutura.docx';
+    a.click();
+    URL.revokeObjectURL(url);
+
+  } catch(e) {
+    if (e.message.includes('fetch') || e.message.includes('Failed') || e.message.includes('NetworkError') || e.message.includes('refused')) {
+      alert('⚠ Servidor local não está a correr.\n\nO servidor não está disponível. Contacta o administrador.');
+    } else {
+      alert('Erro ao gerar .docx: ' + e.message);
+    }
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = origHtml;
+  }
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function dlTxt(txt,fname){
+  const b=new Blob([txt],{type:'text/plain;charset=utf-8'});
+  const u=URL.createObjectURL(b);
+  const a=document.createElement('a');
+  a.href=u; a.download=fname; a.click();
+  URL.revokeObjectURL(u);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderSuggs();
+</script>
+</body>
+</html>
