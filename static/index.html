@@ -701,15 +701,15 @@ async function addSugg(){
   btn.disabled = true;
   btn.textContent = 'A enviar…';
   try {
-    await fetch(SHEETS_URL, {
+    const resp = await fetch('/sugestao', {
       method: 'POST',
-      mode: 'no-cors',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ texto: txt, autor: 'Equipa' })
     });
+    if (!resp.ok) throw new Error('Erro no servidor');
     document.getElementById('suggInput').value = '';
     document.getElementById('suggList').innerHTML = '<p class="sugg-empty">✓ Sugestão enviada para o Google Sheets.</p>';
-    setTimeout(()=>{ document.getElementById('suggList').innerHTML='<p class="sugg-empty">Nenhuma sugestão pendente.</p>'; }, 3000);
+    setTimeout(()=>{ document.getElementById('suggList').innerHTML='<p class="sugg-empty">As sugestões são enviadas diretamente para o Google Sheets.</p>'; }, 3000);
   } catch(e) {
     alert('Erro ao enviar sugestão. Verifica a ligação à internet.');
   } finally {

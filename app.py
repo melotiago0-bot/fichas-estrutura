@@ -80,6 +80,22 @@ def fill_and_pack(data):
 def index():
     return send_from_directory('static', 'index.html')
 
+@app.route('/sugestao', methods=['POST', 'OPTIONS'])
+def sugestao():
+    if request.method == 'OPTIONS':
+        resp = app.make_default_options_response()
+        return resp
+    try:
+        import urllib.request
+        data = request.get_json(force=True)
+        SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzx0Ky5OzwOkvJ7JmoVQUP162TJIYWW6BrD5-w6R7EKB_uxt2omexmCiMQ-sYSg0w8s/exec'
+        payload = json.dumps(data).encode('utf-8')
+        req = urllib.request.Request(SHEETS_URL, data=payload, headers={'Content-Type': 'application/json'}, method='POST')
+        urllib.request.urlopen(req, timeout=10)
+        return jsonify({'status': 'ok'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 @app.route('/generate', methods=['POST', 'OPTIONS'])
 def generate():
     if request.method == 'OPTIONS':
